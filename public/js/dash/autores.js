@@ -20,6 +20,8 @@ function autores() {
 
             $('#autor option').remove()
             $(autorRow).appendTo('#autor')
+            $('#add-autor option').remove()
+            $(autorRow).appendTo('#add-autor')
         })
         .catch(function (error) {
             runWaitMeClose(selectorLoad)

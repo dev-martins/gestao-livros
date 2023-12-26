@@ -30,16 +30,16 @@ class LivroRequest extends FormRequest
                 'Editora' => 'required|string|max:40|min:4',
                 'Edicao' => 'required|integer|min:0',
                 'AnoPublicacao' => 'required|string|min:4|max:4',
-                'Autores' => 'array|min:1',
-                'Assuntos' => 'array|min:1',
+                'Autores' => 'array',
+                'Assuntos' => 'array',
             ],
             $this->getMethod() == 'PUT' => [
                 'Titulo' => ['string', 'max:40', 'min:4', Rule::unique('livros', 'Titulo')->ignore($this->route('id'), 'CodL'),],
                 'Editora' => 'string|max:40|min:4',
                 'Edicao' => 'integer|min:0',
                 'AnoPublicacao' => 'string|min:4|max:4',
-                'Autores' => 'array|min:1',
-                'Assuntos' => 'array|min:1',
+                'Autores' => 'array',
+                'Assuntos' => 'array',
             ],
             default => []
         };

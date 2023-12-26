@@ -14,10 +14,4 @@ class Autor extends Model
     protected $table = 'autores';
 
     protected $primaryKey = 'CodAu';
-
-
-    // public function livros()
-    // {
-    //     return $this->belongsToMany(Livro::class, 'livro_autores', 'AutorCodAu', 'LivroCodL','LivroCodL');
-    // }
 }

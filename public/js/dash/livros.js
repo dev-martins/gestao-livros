@@ -35,7 +35,7 @@ function livrosComAutoresAssuntos() {
             <td id="t-descricao">${descricaoAs}</td>
             <td class="td-buttons">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary" data-codladd="${livro.CodL}">
+                    <button type="button" class="btn btn-primary" data-codladd="${livro.CodL}" data-toggle="modal" data-target="#modal-adicionar">
                         <i class="fas fa-plus"></i>
                     </button>
                     <button type="button" class="btn btn-warning" data-codledit="${livro.CodL}" data-toggle="modal" data-target="#modal-default">
@@ -63,14 +63,65 @@ function livrosComAutoresAssuntos() {
         });
 }
 
+function addLivrosComAutoresAssuntos(data) {
+    let token = getCookie('token');
+    let selectorLoad = 'table';
+
+    runWaitMe(selectorLoad)
+    axios.post(`/api/livro`,
+            data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+        .then(function (resp) {
+            runWaitMeClose(selectorLoad)
+            livrosComAutoresAssuntos()
+        })
+        .catch(function (error) {
+            runWaitMeClose(selectorLoad)
+            if (error.response.data.message)
+                toast(error.response.data.message, '#dc3545', '#fff')
+            if (error.response.status == 401)
+                window.location.href = '/login';
+        });
+}
+
 function editLivrosComAutoresAssuntos(data, id) {
     let token = getCookie('token');
     let selectorLoad = 'table';
-    let titulo = 'teste';
+    console.log(data)
     runWaitMe(selectorLoad)
-    axios.put(`/api/livro/${id}`, {
-            data
-        }, {
+    axios.put(`/api/livro/${id}`,
+            data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+        .then(function (resp) {
+            runWaitMeClose(selectorLoad)
+            livrosComAutoresAssuntos()
+        })
+        .catch(function (error) {
+            runWaitMeClose(selectorLoad)
+            if (error.response.data.message)
+                toast(error.response.data.message, '#dc3545', '#fff')
+            if (error.response.status == 401)
+                window.location.href = '/login';
+        });
+}
+
+function removerLivros(id) {
+    let token = getCookie('token');
+    let selectorLoad = 'table';
+
+    runWaitMe(selectorLoad)
+
+    axios.delete(`/api/livro/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -79,7 +130,7 @@ function editLivrosComAutoresAssuntos(data, id) {
         })
         .then(function (resp) {
             runWaitMeClose(selectorLoad)
-            livrosComAutoresAssuntos
+            livrosComAutoresAssuntos()
         })
         .catch(function (error) {
             runWaitMeClose(selectorLoad)
@@ -106,6 +157,12 @@ function selecionarOpcoes(selectId, valores) {
     });
 }
 
+function capitalizeWords(input) {
+    return input.replace(/(?:^|\s|-)(\S)/g, function (match, group) {
+        return group.toUpperCase();
+    });
+}
+
 $(document).on('click', '.btn-warning', function () {
     var tr = $(this).closest('tr');
     var tds = tr.find('td');
@@ -117,9 +174,9 @@ $(document).on('click', '.btn-warning', function () {
     $('#editora').val(tds[1].textContent);
     $('#ano-publicacao').val(tds[3].textContent);
     $('#edicao').val(tds[2].textContent);
-    selecionarOpcoes('autor', tds[4].textContent);
+    selecionarOpcoes('autores', tds[4].textContent);
 
-    selecionarOpcoes('assunto', tds[5].textContent);
+    selecionarOpcoes('assuntos', tds[5].textContent);
 })
 
 // selecionar todos os dados do formulário
@@ -130,7 +187,7 @@ $(document).on('click', '#salvar', function () {
 
     formulario.find(':input').each(function () {
         var input = $(this);
-        var nome = input.attr('name');
+        var nome = capitalizeWords(input.attr('name'));
         var tipo = input.attr('type');
 
         if (tipo === 'select-multiple') {
@@ -145,5 +202,30 @@ $(document).on('click', '#salvar', function () {
     editLivrosComAutoresAssuntos(valores, id)
 });
 
+$(document).on('click', '#add-salvar', function () {
+    var formulario = $('#form-add');
+
+    var valores = {};
+
+    formulario.find(':input').each(function () {
+        var input = $(this);
+        var nome = capitalizeWords(input.attr('name'));
+        var tipo = input.attr('type');
+
+        if (tipo === 'select-multiple') {
+            var valoresSelecionados = input.val() || [];
+
+            valores[nome] = valoresSelecionados;
+        } else {
+            valores[nome] = input.val();
+        }
+    });
+    addLivrosComAutoresAssuntos(valores)
+});
+
+$(document).on('click', '[data-codlremove]', function () {
+    var id = $(this).data('codlremove')
+    removerLivros(id)
+})
 
 livrosComAutoresAssuntos()
