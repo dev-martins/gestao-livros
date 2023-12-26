@@ -46,7 +46,7 @@ class LivroService implements LivroServiceInterface
         }
 
         if (count($assuntos) > 0) {
-            $livro->autores()->sync($assuntos);
+            $livro->assuntos()->sync($assuntos);
         }
 
         return $livro;

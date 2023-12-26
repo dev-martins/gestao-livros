@@ -1,8 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-        <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Gestão Livros</span>
     </a>
 
     <!-- Sidebar -->
@@ -15,7 +14,7 @@
 
                 <li class="nav-item">
                     <a href="/dash" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="fa-solid fa-calculator"></i>
                         <p>
                             Home
                         </p>
@@ -23,7 +22,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="/dash/livro" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="fa-solid fa-book"></i>
                         <p>
                             Livros
                         </p>
@@ -31,7 +30,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="/dash/autor" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="fa-solid fa-file-pen"></i>
                         <p>
                             Autores
                         </p>
@@ -39,7 +38,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="/dash/assunto" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="fa-solid fa-message"></i>
                         <p>
                             Assuntos
                         </p>
